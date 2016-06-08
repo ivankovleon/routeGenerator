@@ -39,22 +39,22 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
+
 //        'urlManager' => [
-//            'class' => 'yii\web\UrlManager',
 //            'enablePrettyUrl' => true,
 //            'showScriptName' => false,
 //            'rules' => [
-//                '<_a:(login|logout|signup|email-confirm|request-password-reset|password-reset)>' => '/default/<_a>',
 //            ],
 //        ],
+
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                '<_a:(login|logout|signup|email-confirm|request-password-reset|password-reset)>' => '/default/<_a>',
+            ],
+        ],
     ],
     'params' => $params,
 ];

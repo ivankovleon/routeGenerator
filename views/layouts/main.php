@@ -60,8 +60,8 @@ AppAsset::register($this);
             'label' => 'Выход (' . Yii::$app->user->identity->username . ')',
             'url' => ['/default/logout'],
             'linkOptions' => ['data-method' => 'post']
-
         ];
+        $menuItems[] = ['label' => 'Создать карту', 'url' => ['/site/create-map']];
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],

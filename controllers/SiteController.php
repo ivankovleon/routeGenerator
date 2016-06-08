@@ -2,13 +2,13 @@
 
 namespace app\controllers;
 
-use app\models\EntryForm;
+use app\models\Map;
+use app\models\MapUploadImageForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use yii\web\UploadedFile;
 
 class SiteController extends Controller
 {
@@ -54,25 +54,25 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-//    public function actionLogin()
-//    {
-//        if (!\Yii::$app->user->isGuest) {
-//            return $this->goHome();
-//        }
-//
-//        $model = new LoginForm();
-//        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-//            return $this->goBack();
-//        }
-//        return $this->render('login', [
-//            'model' => $model,
-//        ]);
-//    }
-//
-//    public function actionLogout()
-//    {
-//        Yii::$app->user->logout();
-//
-//        return $this->goHome();
-//    }
+
+    public function actionCreateMap(){
+        $map = new Map();
+        $map->author_id = Yii::$app->user->getId();
+        if($map->load(Yii::$app->request->post()) &&  $map->validate()) {
+            $image = UploadedFile::getInstance($map, 'file');
+            if (!is_null($image)) {
+                $ext = end(explode(".", $image->name));
+                $map->file_name = Yii::$app->security->generateRandomString().".{$ext}";
+                Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
+                $path = Yii::$app->params['uploadPath']  . $map->file_name;
+                $image->saveAs($path);
+                if($map->save()) {
+                    Yii::$app->getSession()->setFlash('success', 'Крата успешно добавлена');
+                }
+            }
+        }
+
+        return $this->render('createMap',['map'=>$map]);
+    }
+
 }
