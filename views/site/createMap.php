@@ -13,7 +13,7 @@ use kartik\file\FileInput;
         <div class="row">
             <div class="col-lg-5">
                 <div class="well">
-                    <h3 class="page-header" style="margin-top: 10px;">Парметры</h3>
+                    <h3 class="page-header" style="margin-top: 10px;">Параметры</h3>
                     <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
                     <?= $form->field($map, 'name')->textInput(['maxlength' => true]) ?>
@@ -26,10 +26,9 @@ use kartik\file\FileInput;
                     ])->label("Загрузить карту") ?>
 
                     <div class="form-group">
-                        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
+                        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary'])?>
                     </div>
                     <?php ActiveForm::end(); ?>
-
 
                 </div>
 

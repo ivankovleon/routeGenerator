@@ -45,8 +45,8 @@ class Map extends \yii\db\ActiveRecord
             [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['author_id' => 'id']],
             [['file'], 'safe'],
             ['file', 'image', 'extensions'=>'jpg, gif, png',
-                'minWidth' => 100, 'maxWidth' => 512,
-                'minHeight' => 100, 'maxHeight' => 512],
+                'minWidth' => 1, 'maxWidth' => 3000,
+                'minHeight' => 1, 'maxHeight' => 2000],
             //['file', 'file', 'maxSize'=>'100000', 'message' => '������ ����� �� ������ ��������� 100000'],,
         ];
     }
@@ -62,7 +62,7 @@ class Map extends \yii\db\ActiveRecord
             'name' => 'Name',
             'status' => 'Status',
             'control_points_number' => 'Control Points Number',
-            'root_route_length' => 'Root Route Length',
+            'root_route_length' => 'Route Length',
             'map_scale' => 'Map Scale',
             'file_name' => 'File Name',
         ];
