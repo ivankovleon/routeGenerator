@@ -6,6 +6,7 @@ use app\models\Map;
 use app\models\MapUploadImageForm;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
@@ -55,7 +56,12 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    public function actionCustomizeMap($mapId,  $pointx, $pointy)
+    {
+        $map = Map::findIdentity($mapId);
 
+        return $this->render('customizeMap',['map' => $map, 'pointx' =>$pointx, 'pointy' =>$pointy]);
+    }
     public function actionCreateMap(){
         $map = new Map();
         $map->author_id = Yii::$app->user->getId();
@@ -241,11 +247,10 @@ class SiteController extends Controller
                 }
 
 
-
-
-
                 $newpath = Yii::$app->params['uploadPath'] . 'test4.jpg';
                 imagejpeg($img, $newpath);
+                //$this->redirect(Url::to(['site/customize-map', 'id' =>  $map->id,'pointx' => $pointx, 'pointy' => $pointy]));
+                return $this->actionCustomizeMap($map->id,$pointx,$pointy);
             }
         }
         return $this->render('createMap',['map'=>$map]);

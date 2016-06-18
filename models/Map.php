@@ -75,4 +75,9 @@ class Map extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'author_id']);
     }
+
+    public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id,]);
+    }
 }
