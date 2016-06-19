@@ -85,13 +85,11 @@ $script = <<< JS
 
             for(var i = 1;i < pointX.length-1;i++) {
                 var num = makeNumber(i+1, pointX[i],pointY[i]);
-                canvas.add(num);
                 canvas.add(makeCircle(pointX[i], pointY[i], lines[i-1],lines[i],num));
                 canvas.add(num);
             }
             var lastNum = makeNumber(pointX.length, pointX[pointX.length-1],pointY[pointY.length-1]);
-
-            canvas.add(makeCircle(pointX[pointX.length-1], pointY[pointY.length-1], lines[lines.length-1],lastNum));
+            canvas.add(makeCircle(pointX[pointX.length-1], pointY[pointY.length-1], lines[lines.length-1],null,lastNum));
             canvas.add(lastNum);
         }
 
