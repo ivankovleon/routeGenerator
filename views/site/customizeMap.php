@@ -29,12 +29,12 @@ $script = <<< JS
         var pointY = $js_pointy;
         fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
-        function makeCircle(left, top, line1, line2) {
+        function makeCircle(left, top, line1, line2, num) {
             var c = new fabric.Circle({
                 left: left,
-                top: top,
+                top: top-2,
                 strokeWidth: 2,
-                radius: 6,
+                radius: 8,
                 fill: '#fff',
                 stroke: '#666'
             });
@@ -42,6 +42,11 @@ $script = <<< JS
 
             c.line1 = line1;
             c.line2 = line2;
+            c.num = num;
+            if(c.num) {
+                c.num.circle = c;
+            }
+
 
             return c;
         }
@@ -54,7 +59,18 @@ $script = <<< JS
                 selectable: false
             });
         }
-
+        function makeNumber(num,left,top) {
+            var n = new fabric.Text(num.toString(), {
+                  fontSize: 12,
+                  left: left,
+                  top: top,
+                  fontWeight: 'bold',
+                  hasBorders: false,
+                  hasControls: false
+            });
+            n.circle = null;
+            return n;
+        }
         function makeRoute() {
 
             var lines = [];
@@ -62,12 +78,21 @@ $script = <<< JS
                 lines.push(makeLine([pointX[i], pointY[i], pointX[i+1], pointY[i+1]]));
                 canvas.add(lines[i]);
             }
-            canvas.add(makeCircle(pointX[0], pointY[0], null,lines[0]));
+
+            var firstNum = makeNumber(1, pointX[0],pointY[0]);
+            canvas.add(makeCircle(pointX[0], pointY[0], null,lines[0],firstNum));
+            canvas.add(firstNum);
 
             for(var i = 1;i < pointX.length-1;i++) {
-                canvas.add(makeCircle(pointX[i], pointY[i], lines[i-1],lines[i]));
+                var num = makeNumber(i+1, pointX[i],pointY[i]);
+                canvas.add(num);
+                canvas.add(makeCircle(pointX[i], pointY[i], lines[i-1],lines[i],num));
+                canvas.add(num);
             }
-            canvas.add(makeCircle(pointX[pointX.length-1], pointY[pointX.length-1], lines[lines.length-1]));
+            var lastNum = makeNumber(pointX.length, pointX[pointX.length-1],pointY[pointY.length-1]);
+
+            canvas.add(makeCircle(pointX[pointX.length-1], pointY[pointY.length-1], lines[lines.length-1],lastNum));
+            canvas.add(lastNum);
         }
 
         makeRoute();
@@ -75,10 +100,16 @@ $script = <<< JS
 
         canvas.on('object:moving', function(e) {
             var p = e.target;
-            p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
-            p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
-            p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
-            p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
+
+            if(p.circle) {
+                p.circle.line1 && p.circle.line1.set({ 'x2': p.left, 'y2': p.top });
+                p.circle.line2 && p.circle.line2.set({ 'x1': p.left, 'y1': p.top });
+                p.circle && p.circle.set({ 'left': p.left, 'top': p.top-2 });
+            } else {
+                p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
+                p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
+                p.num && p.num.set({ 'left': p.left, 'top': p.top+2 });
+            }
             canvas.renderAll();
         });
     })();
