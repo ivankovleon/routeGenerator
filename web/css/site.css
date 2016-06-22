@@ -89,3 +89,15 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+
+.map-preview {
+    float: left;
+    margin-right: 10px;
+}
+
+.padding-fix {
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    min-height: 135px;
+}

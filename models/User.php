@@ -21,6 +21,7 @@ use \yii\db\ActiveRecord;
  * @property string $password_reset_token
  * @property string $email
  * @property integer $status
+ * @property string $admin
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -32,6 +33,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     const STATUS_BLOCKED = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_WAIT = 2;
+
+    const STATUS_DEFAULT = 0;
+    const STATUS_ADMIN = 1;
+
 
     public static function tableName()
     {
@@ -63,6 +68,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             ['status', 'integer'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => array_keys(self::getStatusesArray())],
+            ['admin', 'integer'],
+            ['admin', 'default', 'value' => self::STATUS_DEFAULT],
+            ['admin', 'in', 'range' => array_keys(self::getAdminsArray())],
         ];
     }
 
@@ -117,6 +125,18 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 //            self::STATUS_ADMIN => 'Администратор',
 //        ];
 //    }
+    public function getAdminName()
+    {
+        return ArrayHelper::getValue(self::getAdminsArray(), $this->admin);
+    }
+
+    public static function getAdminsArray()
+    {
+        return [
+            self::STATUS_DEFAULT => 'Пользователь',
+            self::STATUS_ADMIN => 'Администратор',
+        ];
+    }
 
     public static function findIdentity($id)
     {

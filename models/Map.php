@@ -59,12 +59,12 @@ class Map extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'author_id' => 'Author ID',
-            'name' => 'Name',
-            'status' => 'Status',
-            'control_points_number' => 'Control Points Number',
-            'root_route_length' => 'Route Length',
-            'map_scale' => 'Map Scale',
-            'file_name' => 'File Name',
+            'name' => 'Название карты',
+            'status' => 'Статус',
+            'control_points_number' => 'Количество контрольных пунктов',
+            'root_route_length' => 'Длина маршрута ',
+            'map_scale' => 'Маштаб карты',
+            'file_name' => 'Название файла карты',
         ];
     }
 

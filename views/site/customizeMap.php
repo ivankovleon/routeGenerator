@@ -16,6 +16,8 @@ $js_pointy = json_encode($pointy);
 $js_imgUrl = json_encode(Yii::$app->homeUrl . 'uploads/' . $map->file_name);
 $script = <<< JS
     (function() {
+
+
         var canvas = this.__canvas = new fabric.Canvas('c', { selection: false });
         canvas.setWidth(1000);
         canvas.setHeight(1000);
@@ -32,7 +34,7 @@ $script = <<< JS
         function makeCircle(left, top, line1, line2, num) {
             var c = new fabric.Circle({
                 left: left,
-                top: top-2,
+                top: top,
                 strokeWidth: 2,
                 radius: 8,
                 fill: '#fff',
@@ -63,11 +65,12 @@ $script = <<< JS
             var n = new fabric.Text(num.toString(), {
                   fontSize: 12,
                   left: left,
-                  top: top,
+                  top: top+1,
                   fontWeight: 'bold',
                   hasBorders: false,
                   hasControls: false
             });
+
             n.circle = null;
             return n;
         }
@@ -110,9 +113,29 @@ $script = <<< JS
             }
             canvas.renderAll();
         });
+
+
+         $('#row').on('click','#download',function (event){
+
+         });
+
+         function downloadCanvas(link, canvasId, filename) {
+            link.href = document.getElementById(canvasId).toDataURL();
+            link.download = filename;
+         }
+
+        document.getElementById('download').addEventListener('click', function() {
+            downloadCanvas(this, 'c', 'test.png');
+        }, false);
+
     })();
 JS;
 $this->registerJs($script, yii\web\View::POS_READY);
 ?>
+<div class="row">
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="margin-bottom: 15px">
+        <a class="btn btn-primary" href="#" id="download">Скачать</a>
+    </div>
 
+</div>
 <canvas id="c"></canvas>
